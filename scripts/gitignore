@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+# Compiles together multiple gitignore files from GitHub
+
+import sys
+import urllib2
+
+
+def fetch_gignore(name):
+    template = "https://raw.githubusercontent.com/github/" +\
+        "gitignore/master/{}.gitignore"
+    url = template.format(name)
+    req = urllib2.urlopen(url)
+    return req.read()
+
+
+def gitignore(*types):
+    gignore = str()
+    for arg in types:
+        g_str = fetch_gignore(arg)
+        gignore += "##### --- {} --- #####\n{}\n".format(arg, g_str)
+    return gignore
+
+
+if __name__ == "__main__":
+    print gitignore(*sys.argv[1:])
