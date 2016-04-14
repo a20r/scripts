@@ -1,2 +1,2 @@
 # scripts
-A handy place for my scripts
+A handy place for my scripts.
