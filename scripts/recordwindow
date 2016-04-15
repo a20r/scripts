@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Runs recordmydesktop on the window you click :D
+
+recordmydesktop --windowid `xwininfo -display :0 | grep 'id: 0x' | grep -Eo '0x[a-z0-9]+'`
