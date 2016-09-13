@@ -6,7 +6,7 @@ import os
 
 def pdfcrop(filenames):
     for fname in filenames:
-        os.system("pdfcrop {} {}".format(fname, fname))
+        os.system("pdfcrop {0} {0}".format(fname))
 
 
 if __name__ == "__main__":
