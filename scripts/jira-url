@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+import argparse
+
+parser = argparse.ArgumentParser(prog='jira-url')
+parser.add_argument('ticket')
+parser.add_argument('-p', '--proj', default='PINGO')
+args = parser.parse_args()
+
+print(f'https://routableai.atlassian.net/browse/{args.proj}-{args.ticket}')
+

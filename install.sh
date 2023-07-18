@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 chmod +x scripts/*
-cp scripts/* /usr/local/bin
+ln -s $(pwd)/scripts/* /usr/local/bin/
