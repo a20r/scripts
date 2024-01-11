@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+from sh import docker
+from os import path
+import argparse
+
+parser = argparse.ArgumentParser(prog='osrm')
+parser.add_argument('instance')
+parser.add_argument('-p', '--port', type=int, default=6942)
+args = parser.parse_args()
+
+
+def main():
+    proj_dir = path.dirname(path.realpath(__file__))
+    cfg_file = path.join(proj_dir, '..', 'assets',
+                         'osrm', 'docker-compose.yml')
+    print(cfg_file)
+
+    env = {
+        'PLATFORM': 'linux/amd64',
+        'OSRM_INSTANCE': args.instance,
+        'OSRM_PORT': args.port,
+    }
+
+    docker.compose.up('-f', cfg_file, 'osrm', '-d', '--wait', _env=env)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  osrm:
+    image: us-central1-docker.pkg.dev/trc-internal/osrm/${OSRM_INSTANCE}:latest
+    platform: ${PLATFORM}
+    ports:
+      - ${OSRM_PORT}:5000
+    command: [--threads=8]

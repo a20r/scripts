@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - echo "Using global Taskfile.yml"
+    silent: true
+
+  add-to-path:
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - echo "# [$(date)] Added by Taskfile.yml" >> $HOME/.paths
+      - echo "export PATH=\$PATH:$(pwd)/{{.path}}" >> $HOME/.paths
+      - echo >> $HOME/.paths
+    preconditions:
+      - test -d {{.path}}
+
+  edit: vim $HOME/Taskfile.yml

@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Runs catkin_make in your catkin workspace
-# Needs $CATKIN_WS to be defined
-
-cd $CATKIN_WS; catkin_make $@; cd -;
