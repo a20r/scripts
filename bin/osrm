@@ -5,7 +5,7 @@ from sh import docker
 from os import path, environ
 
 
-def compose(*args, env=None, **kwargs):
+def compose(*args, env=None, **kwargs) -> None:
     proj_dir = path.dirname(path.realpath(__file__))
     cfg_file = path.join(proj_dir, '..', 'assets',
                          'osrm', 'docker-compose.yml')
@@ -18,7 +18,7 @@ def compose(*args, env=None, **kwargs):
     docker.compose('-f', cfg_file, *args, _env=env, **kwargs)
 
 
-def run(args):
+def run(args: argparse.Namespace) -> None:
     env = {
         'PLATFORM': 'linux/amd64',
         'OSRM_INSTANCE': args.instance,
@@ -28,13 +28,7 @@ def run(args):
     compose('up', 'osrm', '-d', '--wait', env=env)
 
 
-def kill(args):
-    # env = {
-    #     'PLATFORM': 'linux/amd64',
-    #     'OSRM_INSTANCE': args.instance,
-    #     'OSRM_PORT': str(args.port),
-    # }
-
+def kill(args: argparse.Namespace) -> None:
     compose('kill', 'osrm')
 
 
