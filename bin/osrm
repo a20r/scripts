@@ -1,29 +1,53 @@
 #!/usr/bin/env python3
 
-from sh import docker
-from os import path
 import argparse
-
-parser = argparse.ArgumentParser(prog='osrm')
-parser.add_argument('instance')
-parser.add_argument('-p', '--port', type=int, default=6942)
-args = parser.parse_args()
+from sh import docker
+from os import path, environ
 
 
-def main():
+def compose(*args, env=None, **kwargs):
     proj_dir = path.dirname(path.realpath(__file__))
     cfg_file = path.join(proj_dir, '..', 'assets',
                          'osrm', 'docker-compose.yml')
-    print(cfg_file)
 
+    _env = environ
+
+    if env:
+        _env = env
+
+    docker.compose('-f', cfg_file, *args, _env=env, **kwargs)
+
+
+def run(args):
     env = {
         'PLATFORM': 'linux/amd64',
         'OSRM_INSTANCE': args.instance,
-        'OSRM_PORT': args.port,
+        'OSRM_PORT': str(args.port),
     }
 
-    docker.compose.up('-f', cfg_file, 'osrm', '-d', '--wait', _env=env)
+    compose('up', 'osrm', '-d', '--wait', env=env)
+
+
+def kill(args):
+    # env = {
+    #     'PLATFORM': 'linux/amd64',
+    #     'OSRM_INSTANCE': args.instance,
+    #     'OSRM_PORT': str(args.port),
+    # }
+
+    compose('kill', 'osrm')
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(prog='osrm')
+    subparsers = parser.add_subparsers()
+
+    parser_run = subparsers.add_parser('run')
+    parser_run.add_argument('instance')
+    parser_run.add_argument('-p', '--port', type=int, default=6942)
+    parser_run.set_defaults(func=run)
+
+    parser_kill = subparsers.add_parser('kill')
+    parser_kill.set_defaults(func=kill)
+    args = parser.parse_args()
+    args.func(args)
