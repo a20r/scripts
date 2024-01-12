@@ -42,9 +42,9 @@ def run(args: argparse.Namespace) -> None:
     compose('run', 'osrm', _tty_in=True, env=env)
 
 
-def list_instances(args: argparse.Namespace) -> None:
+def list_instances(args: argparse.Namespace, out=sys.stdout) -> None:
     query = '(.Publishers[] | "[" + .URL + ":" + (.PublishedPort | tostring)) + "] " + (.Image | split("/") | .[-1] | split(":") | .[0])'
-    jq(query, _in=compose('ps', '--format', 'json', _out=None), _out=sys.stdout)
+    jq('-r', query, _in=compose('ps', '--format', 'json', _out=None), _out=out)
 
 
 def kill(args: argparse.Namespace) -> None:
